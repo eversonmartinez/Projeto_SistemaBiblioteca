@@ -1,4 +1,2 @@
-AFAZERES:
-tela cadastro aluno deixando editar usuario (nao pode)
-tela cadastro aluno alterando a id do usuário sempre que uma nova inserção é feita
-tela cadastro aluno não informando quando um erro ocorre
+Ao clicar em um aluno da lista desabilitar a edição dos campos nome, etc
+deixar criar um usuario novo para quem ainda não tiver

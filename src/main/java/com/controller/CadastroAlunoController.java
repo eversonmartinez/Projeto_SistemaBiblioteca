@@ -88,7 +88,7 @@ public class CadastroAlunoController implements Initializable {
 
                 if(txtUsuario.getText().length() > 1){
                     if(txtSenha.getText().length()>1)
-                        alunoSelecionado.criarUsuario(txtUsuario.getText(), txtSenha.getText());
+                        alunoSelecionado.alterarSenha(txtSenha.getText());
                     else
                         Alerta.exibirAviso("Uma senha deve ser informada");
                 }
@@ -132,7 +132,7 @@ public class CadastroAlunoController implements Initializable {
         if(aluno.getEmail() != alunoComparado.getEmail())
             sim = true;
 
-        if(aluno.getUsuario().equals(alunoComparado.getUsuario()))
+        if(!aluno.getUsuario().equals(alunoComparado.getUsuario()))
             sim = true;
 
         if(aluno.getUsuario().getSenha() != alunoComparado.getUsuario().getSenha())
@@ -146,6 +146,9 @@ public class CadastroAlunoController implements Initializable {
     @FXML
     private void btnNovo_click(ActionEvent event){
         limparCampos();
+        txtNome.setEditable(true);
+        txtUsuario.setEditable(true);
+        txtMatricula.setEditable(true);
     }
 
 
@@ -184,12 +187,20 @@ public class CadastroAlunoController implements Initializable {
 
     @FXML
     private void listaAluno_keyPressed(KeyEvent event){
+
         exibirDados();
+        txtNome.setEditable(false);
+        txtUsuario.setEditable(false);
+        txtMatricula.setEditable(false);
     }
 
     @FXML
     private void listaAluno_mouseClicked(MouseEvent event){
+
         exibirDados();
+        txtNome.setEditable(false);
+        txtUsuario.setEditable(false);
+        txtMatricula.setEditable(false);
     }
 
     private void exibirDados(){
