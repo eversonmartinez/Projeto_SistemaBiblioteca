@@ -1,4 +1,4 @@
-package model;
+package com.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,11 +32,11 @@ public class Autor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Autor autor = (Autor) o;
-        return Objects.equals(id, autor.id);
+        return Objects.equals(id, autor.id) && Objects.equals(nome, autor.nome) && Objects.equals(sobreNome, autor.sobreNome);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, nome, sobreNome);
     }
 }

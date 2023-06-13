@@ -1,4 +1,4 @@
-package model;
+package com.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,7 +18,6 @@ public class Leitor implements Serializable {
     @GeneratedValue(generator="seq_leitor", strategy= GenerationType.SEQUENCE)
     private Long id;
     @Column(name="nome", length=50, nullable = false)
-    @Setter
     private String nome;
     @Column(name="telefone", length=11, nullable = false)
     @Setter
@@ -27,13 +26,24 @@ public class Leitor implements Serializable {
     @Setter
     private String email;
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @Setter
     private Usuario usuario;
 
     public Leitor(String nome, String telefone, String email) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
+    }
+
+    public void criarUsuario(String login, String senha){
+        this.usuario = new Usuario(login, senha);
+    }
+
+    public void alterarSenha(String novaSenha){
+        this.usuario.setSenha(novaSenha);
+    }
+
+    public void excluirUsuario(){
+        this.usuario = null;
     }
 
     @Override
@@ -47,5 +57,11 @@ public class Leitor implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return
+                id + " | " + nome;
     }
 }
