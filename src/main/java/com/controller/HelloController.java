@@ -20,7 +20,7 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    private void onHelloButtonClick(ActionEvent event) throws IOException {
+    private void onAlunoClick(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/CadastroAluno.fxml"));
 
         Scene scene = new Scene(root);
@@ -28,6 +28,20 @@ public class HelloController implements Initializable {
 
         Stage stage = new Stage();
         stage.setTitle("Cadastro de Alunos");
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    @FXML
+    private void onProfessorClick(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/CadastroProfessor.fxml"));
+
+        Scene scene = new Scene(root);
+        scene.getRoot().setStyle("-fx-font-family: 'serif'");
+
+        Stage stage = new Stage();
+        stage.setTitle("Cadastro de Professores");
         stage.setScene(scene);
         stage.show();
 
