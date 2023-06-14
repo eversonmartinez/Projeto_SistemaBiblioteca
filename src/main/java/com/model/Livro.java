@@ -55,6 +55,7 @@ public class Livro implements Serializable {
         this.genero = genero;
         this.autor = autor;
         this.copias = new ArrayList<>();
+        this.copias.add(new Copia());
         for(int i =0; i<qtdCopias; i++)
             this.copias.add(new Copia());
     }
