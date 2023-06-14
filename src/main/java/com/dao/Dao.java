@@ -30,7 +30,7 @@ public class Dao<T> implements Serializable {
             return true;
 
         }   catch(Exception ex) {
-            mensagem = ("Erro ao persisitir: " + Alerta.obterMensagemException(ex));
+            mensagem = (Alerta.obterMensagemException(ex));
             return false;
         }
     }
@@ -44,7 +44,7 @@ public class Dao<T> implements Serializable {
             return true;
 
         } catch (Exception ex){
-            mensagem = "Erro ao editar: " + Alerta.obterMensagemException(ex);
+            mensagem = Alerta.obterMensagemException(ex);
             return false;
         }
     }

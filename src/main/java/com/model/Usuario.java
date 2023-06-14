@@ -39,4 +39,9 @@ public class Usuario implements Serializable {
     public int hashCode() {
         return Objects.hash(login);
     }
+
+    @Override
+    public String toString(){
+        return login;
+    }
 }

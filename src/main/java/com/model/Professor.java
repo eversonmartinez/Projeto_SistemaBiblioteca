@@ -20,4 +20,5 @@ public class Professor extends Leitor implements Serializable {
         super(nome, telefone, email);
         this.formacao = formacao;
     }
+
 }

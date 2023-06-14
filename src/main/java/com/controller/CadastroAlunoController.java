@@ -73,45 +73,59 @@ public class CadastroAlunoController implements Initializable {
                 }
 
                 if(!alunoDao.create(novoAluno)){
-                    Alerta.exibirErro("Não foi possível salvar o aluno!");
+                    Alerta.exibirErro("Não foi possível salvar o aluno!", alunoDao.getMensagem());
                     return;
                 }
 
                 exibirAlunos();
                 limparCampos();
+                listaAluno.getSelectionModel().select(null);
                 txtId.setText(String.valueOf(novoAluno.getId() + 1L));
                 Alerta.exibirInfo("Novo Aluno Salvo com Sucesso!");
             }
 
             else{   //EDIÇÃO DE ALUNO EXISTENTE
-                Alerta.exibirAviso("Edição permitida apenas para os campos Telefone, Email, Senha");
+                Alerta.exibirAviso("Observação", "Edição permitida apenas para os campos:\n" +
+                        "-Telefone \n-Email\n-Senha\n-Usuário (Quando não houver)");
 
-                if(txtUsuario.getText().length() > 1){
-                    if(txtSenha.getText().length()>1)
-                        alunoSelecionado.alterarSenha(txtSenha.getText());
-                    else
-                        Alerta.exibirAviso("Uma senha deve ser informada");
-                }
-
-                else if(txtSenha.getText().length() > 1){
-                    Alerta.exibirAviso("O usuário deve ser informado");
-                }
-
-                alunoSelecionado.setEmail(txtEmail.getText());
-                alunoSelecionado.setTelefone(txtTelefone.getText());
-
-                if(!existeAlteracao(alunoSelecionado, alunoSelecionado.getId())){
+                if(!alterarObjetoSelecionado(listaAluno.getSelectionModel().getSelectedItem())){
                     Alerta.exibirErro("Alteração Inválida");
                     exibirAlunos();
                     return;
                 }
+//                if(!existeAlteracao(listaAluno.getSelectionModel().getSelectedItem().getId())){
+//                    Alerta.exibirErro("Alteração Inválida");
+//                    exibirAlunos();
+//                    if(txtUsuario.getText().length() > 1){
+//                        if(txtSenha.getText().length()>1)
+//                            alunoSelecionado.alterarSenha(txtSenha.getText());
+//                        else
+//                            Alerta.exibirAviso("Uma senha deve ser informada");
+//                    }
+//
+//                    else if(txtSenha.getText().length() > 1){
+//                        Alerta.exibirAviso("O usuário deve ser informado");
+//                    }
+//                    return;
+//                }
+//
+//                alunoSelecionado.setEmail(txtEmail.getText());
+//                alunoSelecionado.setTelefone(txtTelefone.getText());
+//                if (alunoSelecionado.getUsuario() == null && txtUsuario.getText().length()>1){
+//                    if (txtSenha.getText().length() > 0)
+//                        alunoSelecionado.criarUsuario(txtUsuario.getText(), txtSenha.getText());
+//                }
+//
+//                else if(txtSenha.getText().length()>1)
+//                    alunoSelecionado.alterarSenha(txtSenha.getText());
 
                 if(alunoDao.update(alunoSelecionado)) {
                     Alerta.exibirInfo(alunoDao.getMensagem());
                     limparCampos();
+                    listaAluno.getSelectionModel().select(null);
                 }
                 else
-                    Alerta.exibirErro(alunoDao.getMensagem());
+                    Alerta.exibirErro("Erro ao editar aluno", alunoDao.getMensagem());
 
                 exibirAlunos();
             }
@@ -122,33 +136,84 @@ public class CadastroAlunoController implements Initializable {
 
     }
 
-    public Boolean existeAlteracao(Aluno aluno, Object id){
-        Aluno alunoComparado = alunoDao.findById(id);
-        Boolean sim = false;
+    private Boolean alterarObjetoSelecionado(Aluno alunoComparado){
+        Boolean alterado = false;
 
-        if(aluno.getTelefone() != alunoComparado.getTelefone())
-            sim = true;
+        //alterar telefone
+        if(!txtTelefone.getText().isEmpty())
+            if(!alunoComparado.getTelefone().equals(txtTelefone.getText())){
+                alunoComparado.setTelefone(txtTelefone.getText());
+                alterado = true;
+        }
 
-        if(aluno.getEmail() != alunoComparado.getEmail())
-            sim = true;
+        //alterar Email
+        if(!txtEmail.getText().isEmpty())
+            if(!alunoComparado.getEmail().equals(txtEmail.getText())){
+                alunoComparado.setEmail(txtEmail.getText());
+                alterado = true;
+            }
 
-        if(!aluno.getUsuario().equals(alunoComparado.getUsuario()))
-            sim = true;
-
-        if(aluno.getUsuario().getSenha() != alunoComparado.getUsuario().getSenha())
-            sim = true;
-
-        System.out.println(sim);
-        return sim;
+        //alterar usuario
+        //novo usuario
+        if(alunoComparado.getUsuario() == null) {
+            if (!txtUsuario.getText().isEmpty()) {
+                if (!txtSenha.getText().isEmpty()) {
+                    alunoComparado.criarUsuario(txtUsuario.getText(), txtSenha.getText());
+                    alterado = true;
+                }
+                else
+                    Alerta.exibirAviso("Uma senha deve ser informada");
+            }
+            else if(!txtSenha.getText().isEmpty()) {
+                Alerta.exibirAviso("O usuário deve ser informado");
+            }
+        } else{ //nova senha
+            if(alunoComparado.getUsuario().toString().equals(txtUsuario.getText())){
+                if(!txtSenha.getText().isEmpty()){
+                    if(!alunoComparado.getUsuario().getSenha().equals(txtSenha.getText())){
+                        alunoComparado.alterarSenha(txtSenha.getText());
+                        alterado = true;
+                    }
+                }
+                else
+                    Alerta.exibirAviso("Uma senha deve ser informada");
+            }
+        }
+        return alterado;
     }
+//    public Boolean existeAlteracao(Object id){
+//        Aluno alunoComparado = alunoDao.findById(id);
+//
+//        if(!txtTelefone.getText().equals(alunoComparado.getTelefone()))
+//            return true;
+//
+//        if(!txtEmail.getText().equals(alunoComparado.getEmail()))
+//            return true;
+//
+//        if(txtUsuario.getText().length()>0){
+//
+//            if (alunoComparado.getUsuario()==null){
+//                if (txtSenha.getText().length()>0)
+//                    return true;
+//            }
+//            else if(alunoComparado.getUsuario().toString().equals(txtUsuario.getText()))
+//                if(!txtSenha.getText().equals(alunoComparado.getUsuario().getSenha()))
+//                    return true;
+//        }
+//
+//        System.out.println("false");
+//        return false;
+//    }
 
 
     @FXML
-    private void btnNovo_click(ActionEvent event){
+    private void btnNovo_click(){
         limparCampos();
+        exibirAlunos();
         txtNome.setEditable(true);
         txtUsuario.setEditable(true);
         txtMatricula.setEditable(true);
+        listaAluno.getSelectionModel().select(null);
     }
 
 
@@ -161,10 +226,29 @@ public class CadastroAlunoController implements Initializable {
                 Alerta.exibirErro(alunoDao.getMensagem());
                 return;
             }
+            btnNovo_click();
         }   catch(Exception ex){
             ex.printStackTrace();
         }
     }
+
+    @FXML
+    private void btnExcluirUsuario_click(ActionEvent event){
+        try{
+            Aluno alunoSelecionado = listaAluno.getSelectionModel().getSelectedItem();
+            if(alunoSelecionado != null && alunoSelecionado.getUsuario() != null) {
+                alunoSelecionado.excluirUsuario();
+                alunoDao.update(alunoSelecionado);
+                exibirAlunos();
+                exibirDados();
+                Alerta.exibirInfo("Usuário Excluído");
+            }else
+                Alerta.exibirErro("Não foi possível excluir esse usuário");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     private void limparCampos(){
         txtId.setText("");
@@ -190,7 +274,10 @@ public class CadastroAlunoController implements Initializable {
 
         exibirDados();
         txtNome.setEditable(false);
-        txtUsuario.setEditable(false);
+        if(txtUsuario.getLength()>0)
+            txtUsuario.setEditable(false);
+        else
+            txtUsuario.setEditable(true);
         txtMatricula.setEditable(false);
     }
 
@@ -199,13 +286,17 @@ public class CadastroAlunoController implements Initializable {
 
         exibirDados();
         txtNome.setEditable(false);
-        txtUsuario.setEditable(false);
+        if(txtUsuario.getLength()>0)
+            txtUsuario.setEditable(false);
+        else
+            txtUsuario.setEditable(true);
         txtMatricula.setEditable(false);
     }
 
     private void exibirDados(){
         Aluno alunoSelecionado = listaAluno.getSelectionModel().getSelectedItem();
         if (alunoSelecionado != null) {
+            limparCampos();
             txtId.setText(alunoSelecionado.getId().toString());
             txtNome.setText(alunoSelecionado.getNome());
             txtTelefone.setText(alunoSelecionado.getTelefone());

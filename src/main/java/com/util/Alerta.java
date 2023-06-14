@@ -4,22 +4,35 @@ import javafx.scene.control.Alert;
 
 public class Alerta {
 
-    public static void exibirErro(String mensagem){
+    public static void exibirErro(String titulo){
         Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle(mensagem);
+        alerta.setTitle(titulo);
         alerta.show();
     }
+    public static void exibirErro(String titulo, String mensagem){
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setContentText(mensagem);
+        alerta.showAndWait();
+    }
 
-    public static void exibirInfo(String mensagem){
+    public static void exibirInfo(String titulo){
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-        alerta.setTitle(mensagem);
+        alerta.setTitle(titulo);
         alerta.show();
     }
 
-    public static void exibirAviso(String mensagem){
+    public static void exibirAviso(String titulo){
         Alert alerta = new Alert(Alert.AlertType.WARNING);
-        alerta.setTitle(mensagem);
+        alerta.setTitle(titulo);
         alerta.show();
+    }
+
+    public static void exibirAviso(String titulo, String mensagem){
+        Alert alerta = new Alert(Alert.AlertType.WARNING);
+        alerta.setTitle(titulo);
+        alerta.setContentText(mensagem);
+        alerta.showAndWait();
     }
 
     public static String obterMensagemException(Exception e){
