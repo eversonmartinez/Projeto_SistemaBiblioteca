@@ -39,4 +39,9 @@ public class Autor {
     public int hashCode() {
         return Objects.hash(id, nome, sobreNome);
     }
+
+    @Override
+    public String toString() {
+        return id + " | " + nome + " " + sobreNome;
+    }
 }

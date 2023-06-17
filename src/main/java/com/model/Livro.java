@@ -81,4 +81,9 @@ public class Livro implements Serializable {
     public int hashCode() {
         return Objects.hash(id, nome, edicao, autor);
     }
+
+    @Override
+    public String toString() {
+        return id + " | " + nome;
+    }
 }

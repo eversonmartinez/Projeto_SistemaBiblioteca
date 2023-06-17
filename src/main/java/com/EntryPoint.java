@@ -10,7 +10,7 @@ public class EntryPoint extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/hello-view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Index.fxml"));
 
         Scene scene = new Scene(root);
         stage.setTitle("Sistema Bibliotecário");

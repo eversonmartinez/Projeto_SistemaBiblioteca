@@ -222,10 +222,14 @@ public class CadastroAlunoController implements Initializable {
     private void btnExcluir_click(ActionEvent event){
         try{
             Aluno alunoSelecionado = listaAluno.getSelectionModel().getSelectedItem();
+            if(alunoSelecionado == null)
+                return;
+
             if(!alunoDao.delete(alunoSelecionado.getId())){
                 Alerta.exibirErro(alunoDao.getMensagem());
                 return;
             }
+            Alerta.exibirInfo(alunoDao.getMensagem());
             btnNovo_click();
         }   catch(Exception ex){
             ex.printStackTrace();

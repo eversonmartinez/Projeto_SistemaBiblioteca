@@ -1,2 +1,1 @@
-Finalizar a tela de cadastro para livros
-Pensar em como funcionará o controle das cópias
+Criar uma tela para o controle de cópias
