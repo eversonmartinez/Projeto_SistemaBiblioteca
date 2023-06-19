@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -33,7 +34,7 @@ public class CadastroLivroController implements Initializable {
     private ComboBox<Genero> cboGenero;
 
     @FXML
-    private ComboBox<Autor> cboAutor;
+    private ListView<Autor> cboAutor;
 
     @FXML
     private TextField txtCopia;
@@ -72,6 +73,7 @@ public class CadastroLivroController implements Initializable {
                     novoLivro = new Livro(txtNomeLivro.getText(), Integer.parseInt(txtAno.getText()), txtEdicao.getText(),
                             cboGenero.getSelectionModel().getSelectedItem(), cboAutor.getSelectionModel().getSelectedItem(),
                             Integer.parseInt(txtCopia.getText()));
+                    System.out.println(Integer.parseInt(txtCopia.getText()));
                 }
 
 
@@ -88,23 +90,24 @@ public class CadastroLivroController implements Initializable {
             }
 
             else{   //EDIÇÃO DE LIVRO EXISTENTE
-                Alerta.exibirAviso("Edição não permitida");
+                Alerta.exibirAviso("Atenção", "A única operação permitida é a de aumentar o número de cópias");
 
-//                if(!alterarObjetoSelecionado(listaLivro.getSelectionModel().getSelectedItem())){
-//                    Alerta.exibirErro("Alteração Inválida");
-//                    exibirLivros();
-//                    return;
-//                }
-//
-//                if(livroDao.update(livroSelecionado)) {
-//                    Alerta.exibirInfo(livroDao.getMensagem());
-//                    limparCampos();
-//                    listaLivro.getSelectionModel().select(null);
-//                }
-//                else
-//                    Alerta.exibirErro("Erro ao editar", livroDao.getMensagem());
-//
-                exibirLivros();
+                if(!txtCopia.getText().isEmpty()){
+                    Integer quantidadeAtual = livroSelecionado.getCopias().size();
+                    Integer novaQuantidade = Integer.parseInt(txtCopia.getText());
+                    if(novaQuantidade > quantidadeAtual) {
+                        livroSelecionado.adicionarNCopias(novaQuantidade - quantidadeAtual);
+                        livroDao.update(livroSelecionado);
+                        Alerta.exibirInfo(livroDao.getMensagem());
+                        refresh();
+                        limparCampos();
+                        listaLivro.getSelectionModel().select(null);
+                        return;
+                    }
+                }
+
+                Alerta.exibirErro("Operação não permitida!");
+                exibirDados();
             }
 
         }catch(Exception e){
@@ -134,7 +137,6 @@ public class CadastroLivroController implements Initializable {
         txtNomeLivro.setEditable(true);
         txtAno.setEditable(true);
         txtEdicao.setEditable(true);
-        txtCopia.setEditable(true);
         listaLivro.getSelectionModel().select(null);
     }
 
@@ -206,7 +208,6 @@ public class CadastroLivroController implements Initializable {
         txtNomeLivro.setEditable(false);
         txtAno.setEditable(false);
         txtEdicao.setEditable(false);
-        txtCopia.setEditable(false);
     }
 
     @FXML
@@ -216,7 +217,6 @@ public class CadastroLivroController implements Initializable {
         txtNomeLivro.setEditable(false);
         txtAno.setEditable(false);
         txtEdicao.setEditable(false);
-        txtCopia.setEditable(false);
     }
 
     private void exibirDados(){
@@ -242,6 +242,7 @@ public class CadastroLivroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         refresh();
+        cboAutor.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);  //getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
 

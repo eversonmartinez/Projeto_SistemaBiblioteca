@@ -28,14 +28,15 @@ public class Livro implements Serializable {
     @ManyToOne
     @JoinColumn(name = "genero", referencedColumnName = "id", nullable = false)
     private Genero genero;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "autor", referencedColumnName = "id", nullable = false)
-    private Autor autor;
+    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "autor", referencedColumnName = "id", nullable = false)
+    private List<Autor> autores;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Copia> copias;
 
     public Livro(){
         this.copias = new ArrayList<>();
+        this.autores = new ArrayList<>();
     }
 
     public Livro(String nome, Integer ano, String edicao, Genero genero, Autor autor) {
@@ -43,7 +44,8 @@ public class Livro implements Serializable {
         this.ano = ano;
         this.edicao = edicao;
         this.genero = genero;
-        this.autor = autor;
+        this.autores = new ArrayList<>();
+        this.autores.add(autor);
         this.copias = new ArrayList<>();
         this.copias.add(new Copia());
     }
@@ -53,9 +55,9 @@ public class Livro implements Serializable {
         this.ano = ano;
         this.edicao = edicao;
         this.genero = genero;
-        this.autor = autor;
+        this.autores.add(autor);
+        this.autores = new ArrayList<>();
         this.copias = new ArrayList<>();
-        this.copias.add(new Copia());
         for(int i =0; i<qtdCopias; i++)
             this.copias.add(new Copia());
     }
@@ -68,18 +70,26 @@ public class Livro implements Serializable {
         this.copias.remove(copia);
     }
 
+    public void adicionarNCopias(Integer numeroCopias){
+        for(int i = 0; i < numeroCopias; i++)
+            this.copias.add(new Copia());
+    }
+
+    public void adicionarAutor(Autor autor){
+        this.autores.add(autor);
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Livro livro = (Livro) o;
-        return Objects.equals(id, livro.id) && Objects.equals(nome, livro.nome) && Objects.equals(edicao, livro.edicao) && Objects.equals(autor, livro.autor);
+        return Objects.equals(id, livro.id) && Objects.equals(nome, livro.nome) && Objects.equals(edicao, livro.edicao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, edicao, autor);
+        return Objects.hash(id, nome, edicao);
     }
 
     @Override
