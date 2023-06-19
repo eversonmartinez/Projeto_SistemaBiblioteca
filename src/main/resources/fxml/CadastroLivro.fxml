@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -8,6 +9,8 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ImageInput?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
@@ -77,6 +80,21 @@
                         </Button>
                         <ComboBox fx:id="cboGenero" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <ListView fx:id="cboAutor" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" GridPane.rowSpan="2" />
+                        <Button fx:id="copias" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnCopia_click" prefHeight="25.0" prefWidth="25.0" text="Button" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+                           <effect>
+                              <ImageInput>
+                                 <source>
+                                    <Image url="file:/C:/Users/Administrador/IdeaProjects/Projeto_SistemaBiblioteca/src/main/resources/images/icon-pencil.png" />
+                                 </source>
+                              </ImageInput>
+                           </effect>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <GridPane.margin>
+                              <Insets left="5.0" />
+                           </GridPane.margin>
+                        </Button>
                      </children>
                   </GridPane>
                   <GridPane layoutX="14.0" layoutY="348.0" prefHeight="26.0" prefWidth="234.0">
