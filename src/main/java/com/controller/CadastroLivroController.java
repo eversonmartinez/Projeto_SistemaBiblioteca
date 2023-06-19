@@ -18,6 +18,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CadastroLivroController implements Initializable {
@@ -65,17 +67,24 @@ public class CadastroLivroController implements Initializable {
                 }
 
                 Livro novoLivro;
+                ObservableList<Autor> autores = cboAutor.getSelectionModel().getSelectedItems();
                 if(txtCopia.getText().isEmpty()) {
                     novoLivro = new Livro(txtNomeLivro.getText(), Integer.parseInt(txtAno.getText()), txtEdicao.getText(),
-                            cboGenero.getSelectionModel().getSelectedItem(), cboAutor.getSelectionModel().getSelectedItem());
+                            cboGenero.getSelectionModel().getSelectedItem(), autorDao.findById(autores.get(0).getId()));
+                    System.out.println(autores.get(0).getNome());
                 }
                 else{
                     novoLivro = new Livro(txtNomeLivro.getText(), Integer.parseInt(txtAno.getText()), txtEdicao.getText(),
-                            cboGenero.getSelectionModel().getSelectedItem(), cboAutor.getSelectionModel().getSelectedItem(),
+                            cboGenero.getSelectionModel().getSelectedItem(), autorDao.findById(autores.get(0).getId()),
                             Integer.parseInt(txtCopia.getText()));
-                    System.out.println(Integer.parseInt(txtCopia.getText()));
                 }
 
+                if(autores.size()>1){
+                    for(Autor autor : autores) {
+                        if(autor!=autores.get(0))
+                            novoLivro.adicionarAutor(autorDao.findById(autor.getId()));
+                    }
+                }
 
                 if(!livroDao.create(novoLivro)){
                     Alerta.exibirErro("Não foi possível salvar o livro!", livroDao.getMensagem());
@@ -84,6 +93,7 @@ public class CadastroLivroController implements Initializable {
 
                 refresh();
                 limparCampos();
+                txtCopia.setText("1");
                 listaLivro.getSelectionModel().select(null);
                 txtId.setText(String.valueOf(novoLivro.getId() + 1L));
                 Alerta.exibirInfo("Novo Livro Salvo com Sucesso!");
@@ -101,6 +111,7 @@ public class CadastroLivroController implements Initializable {
                         Alerta.exibirInfo(livroDao.getMensagem());
                         refresh();
                         limparCampos();
+                        txtCopia.setText("1");
                         listaLivro.getSelectionModel().select(null);
                         return;
                     }
@@ -116,23 +127,10 @@ public class CadastroLivroController implements Initializable {
 
     }
 
-//    private Boolean alterarObjetoSelecionado(Livro copiaComparada){
-//        Boolean alterado = false;
-//
-//        //alterar cópias
-//        if(!txtCopia.getText().isEmpty())
-//            if(copiaComparada.getCopias().size() > Integer.parseInt(txtCopia.getText()){
-//                while(copiaComparada.getCopias().size() > Integer.parseInt(txtCopia.getText())
-//                    copiaComparada.remove;
-//                alterado = true;
-//        }
-//
-//        return alterado;
-//    }
-
     @FXML
     private void btnNovo_click(){
         limparCampos();
+        txtCopia.setText("1");
         refresh();
         txtNomeLivro.setEditable(true);
         txtAno.setEditable(true);
@@ -166,7 +164,7 @@ public class CadastroLivroController implements Initializable {
         txtAno.setText("");
         txtEdicao.setText("");
         txtCopia.setText("");
-        cboAutor.getSelectionModel().select(null);
+        cboAutor.getSelectionModel().clearSelection();
         cboGenero.getSelectionModel().select(null);
     }
 
@@ -229,7 +227,9 @@ public class CadastroLivroController implements Initializable {
             txtEdicao.setText(livroSelecionado.getEdicao());
             txtCopia.setText(String.valueOf(livroSelecionado.getCopias().size()));
             cboGenero.getSelectionModel().select(livroSelecionado.getGenero());
-            cboAutor.getSelectionModel().select(livroSelecionado.getAutor());
+            cboAutor.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            for(Autor autorSelecionado : livroSelecionado.getAutores())
+                cboAutor.getSelectionModel().select(autorSelecionado);
         }
     }
 
@@ -325,12 +325,14 @@ public class CadastroLivroController implements Initializable {
 
     @FXML
     private void listaGenero_keyPressed(KeyEvent event){
+        limparCampos();
         exibirDadosGenero();
         txtNomeGenero.setEditable(false);
     }
 
     @FXML
     private void listaGenero_mouseClicked(MouseEvent event){
+        limparCampos();
         exibirDadosGenero();
         txtNomeGenero.setEditable(false);
     }

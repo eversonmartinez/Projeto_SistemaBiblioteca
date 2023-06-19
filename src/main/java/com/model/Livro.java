@@ -29,7 +29,11 @@ public class Livro implements Serializable {
     @JoinColumn(name = "genero", referencedColumnName = "id", nullable = false)
     private Genero genero;
     @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "autor", referencedColumnName = "id", nullable = false)
+    @JoinTable(name = "livros_autor",
+            joinColumns = @JoinColumn(name = "livro", referencedColumnName = "id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "autor", referencedColumnName = "id", nullable = false),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"autor", "livro"})}
+            )
     private List<Autor> autores;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Copia> copias;
@@ -55,8 +59,8 @@ public class Livro implements Serializable {
         this.ano = ano;
         this.edicao = edicao;
         this.genero = genero;
-        this.autores.add(autor);
         this.autores = new ArrayList<>();
+        this.autores.add(autor);
         this.copias = new ArrayList<>();
         for(int i =0; i<qtdCopias; i++)
             this.copias.add(new Copia());

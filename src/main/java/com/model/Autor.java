@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -21,6 +22,13 @@ public class Autor {
     @Column(name="sobreNome", length=30, nullable = false)
     @Setter
     private String sobreNome;
+    @ManyToMany()
+    @JoinTable(name = "livros_autor",
+            joinColumns = @JoinColumn(name = "autor", referencedColumnName = "id", nullable = true),
+            inverseJoinColumns = @JoinColumn(name = "livro", referencedColumnName = "id", nullable = true),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"autor", "livro"})}
+    )
+    private List<Livro> livros;
 
     public Autor(String nome, String sobreNome) {
         this.nome = nome;
