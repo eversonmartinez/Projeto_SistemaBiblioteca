@@ -11,19 +11,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LivroCopiasController implements Initializable{
+public class LivroCopiasController implements Initializable, Controller{
 
     @FXML
     private TextField txtId;
@@ -33,6 +31,9 @@ public class LivroCopiasController implements Initializable{
 
     @FXML
     private ChoiceBox<Livro> ccbLivro;
+
+    @FXML
+    private CheckBox cbEmprestavel;
 
     LivroDao livroDao = new LivroDao();
     private void exibirLivros(){
@@ -65,8 +66,23 @@ public class LivroCopiasController implements Initializable{
         if (copiaSelecionada != null) {
             limparCampos();
             txtId.setText(copiaSelecionada.getId().toString());
+            cbEmprestavel.selectedProperty().set(copiaSelecionada.getEmprestavel());
+            atualizarCheckBox();
         }
     }
+
+    private void atualizarCheckBox(){
+        cbEmprestavel.selectedProperty().set(listaCopia.getSelectionModel().getSelectedItem().getEmprestavel());
+        marcarcaoCheckBox(new ActionEvent());
+    }
+
+    private void marcarcaoCheckBox(ActionEvent event){
+        if(cbEmprestavel.isSelected())
+            cbEmprestavel.setText("Sim");
+        else
+            cbEmprestavel.setText("Não");
+    }
+
 
     private void limparCampos(){
         txtId.setText("");
@@ -103,7 +119,10 @@ public class LivroCopiasController implements Initializable{
             if(copiaSelecionada == null)
                 return;
 
-            livroSelecionado.removerCopia(copiaSelecionada);
+            if(!livroSelecionado.removerCopia(copiaSelecionada)) {
+                Alerta.exibirErro("Deve existir no mínimo 1 cópia não emprestável");
+                return;
+            }
 
             if(!livroDao.update(livroSelecionado)){
                 Alerta.exibirErro(livroDao.getMensagem());
@@ -118,14 +137,37 @@ public class LivroCopiasController implements Initializable{
     }
 
     @FXML
-    private void listaCopia_keyPressed(KeyEvent event){
+    private void btnSalvar_click(){
+        Boolean opcao = cbEmprestavel.isSelected();
+        Livro livroSelecionado = ccbLivro.getSelectionModel().getSelectedItem();
+        Copia copiaSelecionada = listaCopia.getSelectionModel().getSelectedItem();
+        int index = listaCopia.getSelectionModel().getSelectedIndex();
+        if(opcao != copiaSelecionada.getEmprestavel()){
+            //copiaSelecionada.setEmprestavel(opcao);
 
+            if(!livroSelecionado.modificarEmprestabilidadeCopia(index, opcao)) {
+                Alerta.exibirErro("Deve existir no mínimo 1 cópia não emprestável");
+                exibirDados();
+                return;
+            }
+            livroDao.update(livroSelecionado);
+            Alerta.exibirInfo("Emprestabilidade da cópia modificada!");
+            limparCampos();
+            exibirCopias(new ActionEvent());
+            return;
+        }
+        Alerta.exibirErro("Operação não permitida!");
+        exibirDados();
+    }
+
+
+    @FXML
+    private void listaCopia_keyPressed(KeyEvent event){
         exibirDados();
     }
 
     @FXML
     private void listaCopia_mouseClicked(MouseEvent event){
-
         exibirDados();
     }
 
@@ -134,14 +176,21 @@ public class LivroCopiasController implements Initializable{
         exibirLivros();
         ccbLivro.setOnAction(this::exibirCopias);
         receiveData();
-        //exibirCopias(new ActionEvent());
+        cbEmprestavel.setOnAction(this::marcarcaoCheckBox);
 
     }
 
+    //recebe o livro selecionado que está dentro de um holder, classe que carrega uma informação entre telas.
+    //Essa informação veio da classe cadastro de livros
     private void receiveData(){
         Holder holder = Holder.getInstance();
         Livro livroSelecionado = (Livro) holder.getObject();
         ccbLivro.getSelectionModel().select(livroSelecionado);
     }
 
+    @Override
+    public void refresh() {
+        exibirCopias(new ActionEvent());
+        exibirLivros();
+    }
 }

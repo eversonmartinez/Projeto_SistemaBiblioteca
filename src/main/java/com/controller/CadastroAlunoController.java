@@ -181,30 +181,6 @@ public class CadastroAlunoController implements Initializable, Controller {
         }
         return alterado;
     }
-//    public Boolean existeAlteracao(Object id){
-//        Aluno alunoComparado = alunoDao.findById(id);
-//
-//        if(!txtTelefone.getText().equals(alunoComparado.getTelefone()))
-//            return true;
-//
-//        if(!txtEmail.getText().equals(alunoComparado.getEmail()))
-//            return true;
-//
-//        if(txtUsuario.getText().length()>0){
-//
-//            if (alunoComparado.getUsuario()==null){
-//                if (txtSenha.getText().length()>0)
-//                    return true;
-//            }
-//            else if(alunoComparado.getUsuario().toString().equals(txtUsuario.getText()))
-//                if(!txtSenha.getText().equals(alunoComparado.getUsuario().getSenha()))
-//                    return true;
-//        }
-//
-//        System.out.println("false");
-//        return false;
-//    }
-
 
     @FXML
     private void btnNovo_click(){

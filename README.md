@@ -1,4 +1,3 @@
-Criar uma tela para o controle de cópias
-    -Terminar essa tela
-
-Consertar apontamento do caminho dos ícones, 
+Campos de inserção de inteiros não devem permitir inserção de caracteres
+Implementar classe de emprestimos
+Permitir que na tela de cópias seja visualizável quem está com a posse atual da determinada cópia

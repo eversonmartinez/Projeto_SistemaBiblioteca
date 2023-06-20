@@ -51,7 +51,7 @@ public class Livro implements Serializable {
         this.autores = new ArrayList<>();
         this.autores.add(autor);
         this.copias = new ArrayList<>();
-        this.copias.add(new Copia());
+        this.copias.add(new Copia(true));
     }
 
     public Livro(String nome, Integer ano, String edicao, Genero genero, Autor autor, Integer qtdCopias) {
@@ -64,14 +64,44 @@ public class Livro implements Serializable {
         this.copias = new ArrayList<>();
         for(int i =0; i<qtdCopias; i++)
             this.copias.add(new Copia());
+        this.copias.get(0).setEmprestavel(true);
     }
 
     public void adicionarCopia(){
         this.copias.add(new Copia());
     }
 
-    public void removerCopia(Copia copia){
-        this.copias.remove(copia);
+    public Boolean removerCopia(Copia copia){
+        int copiaNaoEmprestavel = 0;
+        for (Copia c : this.copias) {
+            if(c!=copia && c.getEmprestavel() == true)
+                copiaNaoEmprestavel++;
+        }
+        if(copiaNaoEmprestavel == 0) {
+            return false;
+        }
+        else {
+            this.copias.remove(copia);
+            return true;
+        }
+    }
+
+    public Boolean modificarEmprestabilidadeCopia(Integer index, Boolean bool){
+        int copiaNaoEmprestavel = 0;
+        Copia copia = this.copias.get(index);
+
+        for (Copia c : this.copias) {
+            if(c!= copia && c.getEmprestavel() == true)
+                copiaNaoEmprestavel++;
+        }
+
+        if(copiaNaoEmprestavel == 0) {
+            return false;
+        }
+        else {
+            copia.setEmprestavel(bool);
+            return true;
+        }
     }
 
     public void adicionarNCopias(Integer numeroCopias){

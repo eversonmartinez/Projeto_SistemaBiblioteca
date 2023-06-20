@@ -12,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -21,13 +20,10 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class CadastroLivroController implements Initializable, Controller {
@@ -57,7 +53,7 @@ public class CadastroLivroController implements Initializable, Controller {
     private GeneroDao generoDao = new GeneroDao();
 
     @FXML
-    private void btnSalvar_click(ActionEvent event){
+    private void btnSalvar_click(){
         try{
             Livro livroSelecionado = listaLivro.getSelectionModel().getSelectedItem();
             if(livroSelecionado == null){   //NOVO ALUNO
@@ -149,7 +145,7 @@ public class CadastroLivroController implements Initializable, Controller {
 
 
     @FXML
-    private void btnExcluir_click(ActionEvent event){
+    private void btnExcluir_click(){
         try{
             Livro livroSelecionado = listaLivro.getSelectionModel().getSelectedItem();
             if(livroSelecionado == null)
@@ -249,13 +245,13 @@ public class CadastroLivroController implements Initializable, Controller {
 
     @FXML
     private void btnCopia_click() throws IOException {
+        //passando o livro selecionado para dentro de um "transportador", que no futuro será lido pela classe cópia
         Holder holder = Holder.getInstance();
         holder.setHandle(listaLivro.getSelectionModel().getSelectedItem(), this);
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LivroCopias.fxml"));
 
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/Styles.css");
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
 
         Stage stage = new Stage();
