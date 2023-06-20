@@ -5,6 +5,7 @@ import com.model.Autor;
 import com.model.Copia;
 import com.model.Livro;
 import com.util.Alerta;
+import com.util.Holder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +23,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LivroCopiasController implements Initializable {
+public class LivroCopiasController implements Initializable{
 
     @FXML
     private TextField txtId;
@@ -43,10 +44,17 @@ public class LivroCopiasController implements Initializable {
         }
     }
 
-    private void exibirCopias(Livro livro){
+    private void exibirCopias(ActionEvent event){
         try{
-            ObservableList<Copia> data = FXCollections.observableList(livro.getCopias());
-            listaCopia.setItems(data);
+            limparCampos();
+            Livro livro = ccbLivro.getValue();
+            if(livro!=null) {
+                ObservableList<Copia> data = FXCollections.observableList(livro.getCopias());
+                listaCopia.setItems(data);
+            }
+            Holder holder = Holder.getInstance();
+            CadastroLivroController controller = (CadastroLivroController) holder.getController();
+            controller.exibirDados();
         } catch(Exception ex) {
             ex.printStackTrace();
         }
@@ -71,11 +79,7 @@ public class LivroCopiasController implements Initializable {
             if(livroSelecionado == null)
                 return;
 
-            Copia copiaSelecionada = listaCopia.getSelectionModel().getSelectedItem();
-            if(copiaSelecionada == null)
-                return;
-
-            livroSelecionado.removerCopia(copiaSelecionada);
+            livroSelecionado.adicionarCopia();
 
             if(!livroDao.update(livroSelecionado)){
                 Alerta.exibirErro(livroDao.getMensagem());
@@ -83,7 +87,7 @@ public class LivroCopiasController implements Initializable {
             }
             Alerta.exibirInfo(livroDao.getMensagem());
             limparCampos();
-            exibirCopias(ccbLivro.getSelectionModel().getSelectedItem());
+            exibirCopias(new ActionEvent());
         }   catch(Exception ex){
             ex.printStackTrace();
         }
@@ -107,7 +111,7 @@ public class LivroCopiasController implements Initializable {
             }
             Alerta.exibirInfo(livroDao.getMensagem());
             limparCampos();
-            exibirCopias(ccbLivro.getSelectionModel().getSelectedItem());
+            exibirCopias(new ActionEvent());
         }   catch(Exception ex){
             ex.printStackTrace();
         }
@@ -128,13 +132,15 @@ public class LivroCopiasController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         exibirLivros();
-        receiveData(new ActionEvent());
+        ccbLivro.setOnAction(this::exibirCopias);
+        receiveData();
+        //exibirCopias(new ActionEvent());
+
     }
 
-    private void receiveData(ActionEvent event){
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        Livro livroSelecionado = (Livro) stage.getUserData();
+    private void receiveData(){
+        Holder holder = Holder.getInstance();
+        Livro livroSelecionado = (Livro) holder.getObject();
         ccbLivro.getSelectionModel().select(livroSelecionado);
     }
 

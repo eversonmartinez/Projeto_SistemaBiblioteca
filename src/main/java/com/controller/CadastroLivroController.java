@@ -5,6 +5,7 @@ import com.dao.GeneroDao;
 import com.dao.LivroDao;
 import com.model.*;
 import com.util.Alerta;
+import com.util.Holder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class CadastroLivroController implements Initializable {
+public class CadastroLivroController implements Initializable, Controller {
 
     @FXML
     private TextField txtId;
@@ -224,7 +225,7 @@ public class CadastroLivroController implements Initializable {
         txtEdicao.setEditable(false);
     }
 
-    private void exibirDados(){
+    public void exibirDados(){
         Livro livroSelecionado = listaLivro.getSelectionModel().getSelectedItem();
         if (livroSelecionado != null) {
             limparCampos();
@@ -240,14 +241,17 @@ public class CadastroLivroController implements Initializable {
         }
     }
 
-    private void refresh(){
+    public void refresh(){
         exibirLivros();
         exibirGeneros();
         exibirAutores();
     }
 
     @FXML
-    private void btnCopia_click(ActionEvent event) throws IOException {
+    private void btnCopia_click() throws IOException {
+        Holder holder = Holder.getInstance();
+        holder.setHandle(listaLivro.getSelectionModel().getSelectedItem(), this);
+
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LivroCopias.fxml"));
 
         Scene scene = new Scene(root);
@@ -255,12 +259,10 @@ public class CadastroLivroController implements Initializable {
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
 
         Stage stage = new Stage();
-        stage.setTitle("Controle de Cópias");
-        Livro livroSelecionado = listaLivro.getSelectionModel().getSelectedItem();
-        if(livroSelecionado != null)
-            stage.setUserData(livroSelecionado);
+        stage.setTitle("Gerenciamento de Cópias");
         stage.setScene(scene);
         stage.show();
+
     }
 
     @Override

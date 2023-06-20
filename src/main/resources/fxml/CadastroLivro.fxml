@@ -84,7 +84,7 @@
                            <effect>
                               <ImageInput>
                                  <source>
-                                    <Image url="file:/C:/Users/Administrador/IdeaProjects/Projeto_SistemaBiblioteca/src/main/resources/images/icon-pencil.png" />
+                                    <Image url="@../images/icon-pencil.png" />
                                  </source>
                               </ImageInput>
                            </effect>

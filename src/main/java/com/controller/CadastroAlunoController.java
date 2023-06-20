@@ -17,7 +17,7 @@ import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CadastroAlunoController implements Initializable {
+public class CadastroAlunoController implements Initializable, Controller {
 
     @FXML
     private TextField txtId;
@@ -315,6 +315,11 @@ public class CadastroAlunoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        exibirAlunos();
+    }
+
+    @Override
+    public void refresh() {
         exibirAlunos();
     }
 }

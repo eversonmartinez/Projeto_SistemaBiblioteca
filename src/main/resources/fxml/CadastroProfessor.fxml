@@ -80,7 +80,7 @@
                <effect>
                   <ImageInput>
                      <source>
-                        <Image url="file:/C:/Users/Administrador/IdeaProjects/Projeto_SistemaBiblioteca/src/main/resources/images/icon-lixo.png" />
+                        <Image url="@../images/icon-lixo.png" />
                      </source>
                   </ImageInput>
                </effect>
