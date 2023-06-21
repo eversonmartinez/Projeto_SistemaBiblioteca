@@ -59,4 +59,18 @@ public class IndexController implements Initializable {
         stage.show();
 
     }
+
+    @FXML
+    private void onEmprestimoClick(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Emprestimo.fxml"));
+
+        Scene scene = new Scene(root);
+        scene.getRoot().setStyle("-fx-font-family: 'serif'");
+
+        Stage stage = new Stage();
+        stage.setTitle("Cadastro de Empréstimos");
+        stage.setScene(scene);
+        stage.show();
+
+    }
 }

@@ -11,7 +11,8 @@
          <items>
              <Button onAction="#onAlunoClick" text="Aluno" />
              <Button onAction="#onProfessorClick" text="Professor" />
-            <Button onAction="#onLivroClick" text="Livro" />
+             <Button onAction="#onLivroClick" text="Livro" />
+             <Button onAction="#onEmprestimoClick" text="Emprestimo" />
          </items>
       </ToolBar>
    </children>

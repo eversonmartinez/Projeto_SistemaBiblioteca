@@ -23,7 +23,7 @@ public class Emprestimo implements Serializable {
     @Column(name="dataEntrega", nullable = true)
     private LocalDate dataEntrega;
     @ManyToOne
-    @JoinColumn(name = "copai", nullable = false)
+    @JoinColumn(name = "copia", nullable = false)
     private Copia copia;
     @ManyToOne
     @JoinColumn(name = "leitor", nullable = false)
@@ -39,6 +39,14 @@ public class Emprestimo implements Serializable {
         if(this.leitor.getClass() == Aluno.class){
             this.dataPrevistaEntrega = this.data.plusDays(5);
         }
+    }
+
+    public Boolean setDataEntrega(LocalDate dataEntrega){
+        if(!dataEntrega.isAfter(this.data))
+            return false;
+
+        this.dataEntrega = dataEntrega;
+        return true;
     }
 
     @Override
