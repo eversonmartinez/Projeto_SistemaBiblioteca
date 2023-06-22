@@ -58,22 +58,6 @@ public class EmprestimoController implements Initializable, Controller {
     LivroDao livroDao = new LivroDao();
     LeitorDao leitorDao = new LeitorDao();
 
-    private void exibirDados(){
-        Emprestimo emprestimoSelecionado = listaEmprestimo.getSelectionModel().getSelectedItem();
-        if (emprestimoSelecionado != null) {
-            limparCampos();
-            txtId.setText(emprestimoSelecionado.getId().toString());
-            cboLeitor.getSelectionModel().select(emprestimoSelecionado.getLeitor());
-            cboLivro.getSelectionModel().select(livroDao.findByIdCopia(emprestimoSelecionado.getCopia().getId()));
-            cboCopia.getSelectionModel().select(emprestimoSelecionado.getCopia());
-            dtpData.setValue(emprestimoSelecionado.getData());
-            dtpPrevisao.setValue(emprestimoSelecionado.getDataPrevistaEntrega());
-            if(emprestimoSelecionado.getDataEntrega() != null)
-                dtpData.setValue(emprestimoSelecionado.getDataEntrega());
-            atualizarCheckBox();
-        }
-    }
-
     private void atualizarCheckBox(){
         LocalDate data = listaEmprestimo.getSelectionModel().getSelectedItem().getDataEntrega();
         if(data != null) {
@@ -98,16 +82,35 @@ public class EmprestimoController implements Initializable, Controller {
         txtId.setText("");
         cboLeitor.getSelectionModel().select(null);
         cboLivro.getSelectionModel().select(null);
-        cboCopia.getSelectionModel().select(null);
+        cboCopia.setItems(null);
+        cbEntregue.selectedProperty().set(false);
+        marcacaoCheckBox(new ActionEvent());
         dtpData.setValue(null);
         dtpPrevisao.setValue(null);
         dtpEntrega.setValue(null);
     }
 
+    private void exibirDados(){
+        Emprestimo emprestimoSelecionado = listaEmprestimo.getSelectionModel().getSelectedItem();
+        if (emprestimoSelecionado != null) {
+            limparCampos();
+            txtId.setText(emprestimoSelecionado.getId().toString());
+            cboLeitor.getSelectionModel().select(emprestimoSelecionado.getLeitor());
+            cboLivro.getSelectionModel().select(livroDao.findByIdCopia(emprestimoSelecionado.getCopia().getId()));
+            cboCopia.getSelectionModel().select(emprestimoSelecionado.getCopia());
+            dtpData.setValue(emprestimoSelecionado.getData());
+            dtpPrevisao.setValue(emprestimoSelecionado.getDataPrevistaEntrega());
+            if(emprestimoSelecionado.getDataEntrega() != null)
+                dtpEntrega.setValue(emprestimoSelecionado.getDataEntrega());
+            atualizarCheckBox();
+        }
+    }
+
     private void exibirLivros(){
         try{
-            ObservableList<Livro> data = FXCollections.observableList(livroDao.findAll());
-            cboLivro.setItems(data);
+            ObservableList<Livro> data = FXCollections.observableArrayList(livroDao.findAll());
+            if(data!=null)
+                cboLivro.setItems(data);
         } catch(Exception ex) {
             ex.printStackTrace();
         }
@@ -116,12 +119,30 @@ public class EmprestimoController implements Initializable, Controller {
     @FXML
     private void exibirCopias(){
         try{
-            limparCampos();
-            Livro livro = cboLivro.getValue();
+            Livro livro = cboLivro.getSelectionModel().getSelectedItem();
             if(livro!=null) {
-                ObservableList<Copia> data = FXCollections.observableList(livro.getCopias());
-                cboCopia.setItems(data);
+                ObservableList<Copia> data = FXCollections.observableArrayList(livro.getCopias());
+                if (data != null)
+                    cboCopia.setItems(data);
             }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void exibirLeitores(){
+        try{
+            ObservableList<Leitor> data = FXCollections.observableList(leitorDao.findAll());
+            cboLeitor.setItems(data);
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void exibirEmprestimos(){
+        try{
+            ObservableList<Emprestimo> data = FXCollections.observableList(emprestimoDao.findAll());
+            listaEmprestimo.setItems(data);
         } catch(Exception ex) {
             ex.printStackTrace();
         }
@@ -132,21 +153,26 @@ public class EmprestimoController implements Initializable, Controller {
         try{
             Emprestimo emprestimoSelecionado = listaEmprestimo.getSelectionModel().getSelectedItem();
             if(emprestimoSelecionado == null){   //NOVO EMPRÉSTIMO
-                if(!cboLeitor.getSelectionModel().isSelected(0)){
+                if(cboLeitor.getSelectionModel().isEmpty()){
                     Alerta.exibirErro("Campo \"Leitor\" deve ser selecionado!");
                     return;
                 }
-                if(!cboLivro.getSelectionModel().isSelected(0)){
+                if(cboLivro.getSelectionModel().isEmpty()){
                     Alerta.exibirErro("Campo \"Livro\" deve ser selecionado!");
                     return;
                 }
-                if(!cboCopia.getSelectionModel().isSelected(0)){
+                if(cboCopia.getSelectionModel().isEmpty()){
                     Alerta.exibirErro("Campo \"Copia\" deve ser selecionado!");
                     return;
                 }
 
                 Emprestimo novoEmprestimo = new Emprestimo(dtpData.getValue(), cboCopia.getSelectionModel().getSelectedItem(),
                         cboLeitor.getSelectionModel().getSelectedItem());
+
+                if(cbEntregue.isSelected()) {
+                    if (dtpEntrega.getValue() != null)
+                        novoEmprestimo.setDataEntrega(dtpEntrega.getValue());
+                }
 
                 if(!emprestimoDao.create(novoEmprestimo)){
                     Alerta.exibirErro("Não foi possível criar o empréstimo!", emprestimoDao.getMensagem());
@@ -163,17 +189,33 @@ public class EmprestimoController implements Initializable, Controller {
             else{   //EDIÇÃO DE EMPRÉSTIMO EXISTENTE
                 Alerta.exibirAviso("Atenção", "A única operação permitida é a de definir uma data de entrega");
 
-                if(!cbEntregue.isSelected()){
-                    if(dtpEntrega.getValue() != null){
-                        if(dtpEntrega.getValue().isAfter(emprestimoSelecionado.getData())){
-                            emprestimoSelecionado.setDataEntrega(dtpEntrega.getValue());
-                            emprestimoDao.update(emprestimoSelecionado);
-                            Alerta.exibirInfo(emprestimoDao.getMensagem());
-                            refresh();
-                            limparCampos();
-                            listaEmprestimo.getSelectionModel().select(null);
-                            return;
+                if(cbEntregue.isSelected()){
+                    if(dtpEntrega.getValue() != null) {
+                        if (dtpEntrega.getValue().isAfter(emprestimoSelecionado.getData())) {
+                            if (emprestimoDao.edicaoDataEntrega(emprestimoSelecionado, dtpEntrega.getValue()) == true) {
+                                emprestimoSelecionado.setDataEntrega(dtpEntrega.getValue());
+
+                                if (!emprestimoDao.update(emprestimoSelecionado)) {
+                                    Alerta.exibirErro("Não foi possível atualizar o empréstimo!", emprestimoDao.getMensagem());
+                                    refresh();
+                                    exibirDados();
+                                    return;
+                                }
+                                limparCampos();
+                                refresh();
+                                listaEmprestimo.getSelectionModel().select(null);
+                                Alerta.exibirInfo("Empréstimo atualizado!");
+                                return;
+                            } else {
+                                Alerta.exibirErro("A data de entrega deve ser posterior à data emprestada");
+                                exibirDados();
+                                return;
+                            }
                         }
+                    }
+                    else{
+                        Alerta.exibirErro("Informe a data!");
+                        return;
                     }
                 }
 
@@ -233,19 +275,6 @@ public class EmprestimoController implements Initializable, Controller {
         }
     }
 
-    private void exibirLeitores(){
-        try{
-            limparCampos();
-            Leitor leitor = cboLeitor.getValue();
-            if(leitor!=null) {
-                ObservableList<Leitor> data = FXCollections.observableList(leitorDao.findAll());
-                cboLeitor.setItems(data);
-            }
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     @FXML
     private void listaEmprestimo_keyPressed(KeyEvent event){
         limparCampos();
@@ -262,10 +291,11 @@ public class EmprestimoController implements Initializable, Controller {
     public void refresh() {
         exibirLivros();
         exibirLeitores();
+        exibirEmprestimos();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        refresh();
     }
 }

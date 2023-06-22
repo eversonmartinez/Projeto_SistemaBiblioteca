@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Getter
@@ -22,7 +23,7 @@ public class Emprestimo implements Serializable {
     private LocalDate dataPrevistaEntrega;
     @Column(name="dataEntrega", nullable = true)
     private LocalDate dataEntrega;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "copia", nullable = false)
     private Copia copia;
     @ManyToOne
@@ -60,5 +61,10 @@ public class Emprestimo implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, data, copia, leitor);
+    }
+
+    @Override
+    public String toString() {
+        return id + " | " + leitor.getNome() + " | " + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 }
