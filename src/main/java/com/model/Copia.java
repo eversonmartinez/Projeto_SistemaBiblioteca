@@ -49,6 +49,12 @@ public class Copia implements Serializable {
 
     @Override
     public String toString() {
-        return "Copia" +" id=" + id;
+
+        String retorno = ("Copia" +" id=" + id);
+        if(emprestavel)
+            retorno+= " / Emprestável";
+        else
+            retorno+= " / Não Emprestável";
+        return retorno;
     }
 }

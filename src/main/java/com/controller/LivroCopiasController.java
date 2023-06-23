@@ -1,8 +1,10 @@
 package com.controller;
 
+import com.dao.EmprestimoDao;
 import com.dao.LivroDao;
 import com.model.Autor;
 import com.model.Copia;
+import com.model.Emprestimo;
 import com.model.Livro;
 import com.util.Alerta;
 import com.util.Holder;
@@ -19,6 +21,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LivroCopiasController implements Initializable, Controller{
@@ -34,6 +37,9 @@ public class LivroCopiasController implements Initializable, Controller{
 
     @FXML
     private CheckBox cbEmprestavel;
+
+    @FXML
+    private TextField txtPosse;
 
     LivroDao livroDao = new LivroDao();
     private void exibirLivros(){
@@ -68,7 +74,20 @@ public class LivroCopiasController implements Initializable, Controller{
             txtId.setText(copiaSelecionada.getId().toString());
             cbEmprestavel.selectedProperty().set(copiaSelecionada.getEmprestavel());
             atualizarCheckBox();
+            txtPosse.setText(determinarPosse(copiaSelecionada));
         }
+    }
+
+
+    private String determinarPosse(Copia copia){
+        List<Emprestimo> emprestimos = new EmprestimoDao().findCurrents();
+        for(Emprestimo emprestimo : emprestimos){
+            if(emprestimo.getCopia() == copia){
+                return emprestimo.getLeitor().getNome();
+            }
+        }
+
+        return "Disponível na Biblioteca";
     }
 
     private void atualizarCheckBox(){
@@ -86,6 +105,7 @@ public class LivroCopiasController implements Initializable, Controller{
 
     private void limparCampos(){
         txtId.setText("");
+        txtPosse.setText("");
     }
 
     @FXML

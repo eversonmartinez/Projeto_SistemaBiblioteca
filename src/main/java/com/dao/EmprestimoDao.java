@@ -2,6 +2,7 @@ package com.dao;
 
 import com.model.Copia;
 import com.model.Emprestimo;
+import com.model.Leitor;
 import com.util.Alerta;
 import jakarta.persistence.Query;
 
@@ -112,6 +113,21 @@ public class EmprestimoDao extends Dao<Emprestimo> {
 
     public List<Emprestimo> findByCopia(Long idCopia){
         Query query = em.createQuery("From Emprestimo Where copia.id = " + idCopia);
+        return query.getResultList();
+    }
+
+    public List<Emprestimo> findCurrents(){
+        Query query = em.createQuery("From Emprestimo Where dataEntrega = null");
+        return query.getResultList();
+    }
+
+    public List<Emprestimo> findByLeitor(Leitor leitor){
+        Query query = em.createQuery("From Emprestimo Where leitor.id = " + leitor.getId());
+        return query.getResultList();
+    }
+
+    public List<Emprestimo> findByLeitor(Long idLeitor){
+        Query query = em.createQuery("From Emprestimo Where leitor.id = " + idLeitor);
         return query.getResultList();
     }
 }

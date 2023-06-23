@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,12 +27,15 @@ public class Emprestimo implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "copia", nullable = false)
     private Copia copia;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "leitor", nullable = false)
     private Leitor leitor;
 
-    public Emprestimo(LocalDate data, Copia copia, Leitor leitor) {
+    public Emprestimo(LocalDate data, Copia copia, Leitor leitor) throws IllegalArgumentException{
         this.data = data;
+        if(copia.getEmprestavel() == false){
+            throw new IllegalArgumentException("Cópia não emprestável");
+        }
         this.copia = copia;
         this.leitor = leitor;
         if(this.leitor.getClass() == Professor.class){

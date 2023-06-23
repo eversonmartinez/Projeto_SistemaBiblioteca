@@ -33,7 +33,7 @@
             <Label text="Emprestável" GridPane.rowIndex="2" />
             <CheckBox fx:id="cbEmprestavel" mnemonicParsing="false" text="Não" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Posse atual" GridPane.rowIndex="1" />
-            <TextField editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+            <TextField fx:id="txtPosse" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
             <Button fx:id="salvar" mnemonicParsing="false" onAction="#btnSalvar_click" text="Salvar" GridPane.columnIndex="2" GridPane.rowIndex="3" />
          </children>
       </GridPane>

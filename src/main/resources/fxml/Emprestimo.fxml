@@ -45,11 +45,11 @@
                         <Label text="Id:" />
                         <TextField fx:id="txtId" editable="false" GridPane.columnIndex="1" />
                         <Label text="Leitor" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="cboLeitor" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="cboLeitor" prefHeight="26.0" prefWidth="180.0" promptText="Selecione uma opção" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                         <Label text="Livro" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="cboLivro" onAction="#exibirCopias" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="cboLivro" onAction="#exibirCopias" prefHeight="26.0" prefWidth="180.0" promptText="Selecione uma opção" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                         <Label text="Cópia" GridPane.rowIndex="3" />
-                        <ComboBox fx:id="cboCopia" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="cboCopia" prefHeight="26.0" prefWidth="128.0" promptText="Selecione uma opção" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                         <Hyperlink fx:id="linkLeitor" onAction="#btnLeitor_click" text="Novo" underline="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <Label text="Data" GridPane.rowIndex="4" />
                         <Label text="Previsão entrega" GridPane.rowIndex="5" />
@@ -57,13 +57,13 @@
                         <Label text="Entregue" GridPane.rowIndex="6" />
                         <Label text="Data entregue" GridPane.rowIndex="7" />
                         <CheckBox fx:id="cbEntregue" mnemonicParsing="false" onAction="#marcacaoCheckBox" text="Não" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <DatePicker fx:id="dtpData" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <DatePicker fx:id="dtpData" promptText="Obrigatório" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </DatePicker>
                         <DatePicker fx:id="dtpEntrega" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <DatePicker fx:id="dtpPrevisao" GridPane.columnIndex="1" GridPane.rowIndex="5" />                      
+                        <DatePicker fx:id="dtpPrevisao" editable="false" mouseTransparent="true" opacity="0.65" GridPane.columnIndex="1" GridPane.rowIndex="5" />                      
                      </children>
                   </GridPane>
                   <GridPane alignment="CENTER" layoutX="15.0" layoutY="367.0" prefHeight="30.0" prefWidth="217.0">

@@ -23,6 +23,7 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EmprestimoController implements Initializable, Controller {
@@ -166,6 +167,11 @@ public class EmprestimoController implements Initializable, Controller {
                     return;
                 }
 
+                if(!leitorPodeAlugar(cboLeitor.getSelectionModel().getSelectedItem())){
+                    Alerta.exibirErro("Esse leitor não pode mais realizar empréstimos!");
+                    return;
+                }
+
                 Emprestimo novoEmprestimo = new Emprestimo(dtpData.getValue(), cboCopia.getSelectionModel().getSelectedItem(),
                         cboLeitor.getSelectionModel().getSelectedItem());
 
@@ -224,9 +230,28 @@ public class EmprestimoController implements Initializable, Controller {
             }
 
         }catch(Exception e){
+            Alerta.exibirErro(e.getMessage());
             e.printStackTrace();
         }
 
+    }
+
+    //verifica se o leitor tem mais de 5 livros alugados e não entregues
+    @FXML
+    private Boolean leitorPodeAlugar(Leitor leitor){
+        List<Emprestimo> emprestimos = emprestimoDao.findByLeitor(leitor);
+        int contLeitores = 0;
+
+        for(Emprestimo emprestimo : emprestimos) {
+            if (emprestimo.getDataEntrega() == null)
+                contLeitores++;
+        }
+
+        if (contLeitores >= 5){
+            return false;
+        }
+
+        return true;
     }
 
     @FXML
