@@ -29,7 +29,7 @@ public class Teste {
 //       Emprestimo emprestimo = new Emprestimo(LocalDate.now(), copia, leitor);
 //       emprestimoDao.create(emprestimo);
 
-        List <Emprestimo> emprestimos = new EmprestimoDao().findByLeitor(em.find(Leitor.class, 1));
+        List <Emprestimo> emprestimos = new EmprestimoDao().findEmprestimosPassadosVencidos();
         for(Emprestimo emp : emprestimos)
             System.out.println(emp);
     }

@@ -5,6 +5,7 @@ import com.model.Emprestimo;
 import com.model.Leitor;
 import com.util.Alerta;
 import jakarta.persistence.Query;
+import jakarta.persistence.TemporalType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -128,6 +129,17 @@ public class EmprestimoDao extends Dao<Emprestimo> {
 
     public List<Emprestimo> findByLeitor(Long idLeitor){
         Query query = em.createQuery("From Emprestimo Where leitor.id = " + idLeitor);
+        return query.getResultList();
+    }
+
+    public List<Emprestimo> findEmprestimosVencidos(){
+        Query query = em.createQuery("From Emprestimo Where dataEntrega = null And dataPrevistaEntrega < :today");/* */
+        query.setParameter("today", LocalDate.now());
+        return query.getResultList();
+    }
+
+    public List<Emprestimo> findEmprestimosPassadosVencidos(){
+        Query query = em.createQuery("From Emprestimo Where dataEntrega > dataPrevistaEntrega");/* */
         return query.getResultList();
     }
 }
