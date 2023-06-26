@@ -4,15 +4,13 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane prefHeight="190.0" prefWidth="304.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.IndexController">
+<Pane prefHeight="190.0" prefWidth="304.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.UsuarioController">
    <children>
       <ToolBar layoutX="52.0" layoutY="75.0" prefHeight="40.0" prefWidth="200.0">
          <items>
-             <Button onAction="#onAlunoClick" text="Aluno" />
-             <Button onAction="#onProfessorClick" text="Professor" />
              <Button onAction="#onLivroClick" text="Livro" />
              <Button onAction="#onEmprestimoClick" text="Emprestimo" />
+            <Button onAction="#onPerfilClick" text="Perfil" />
          </items>
       </ToolBar>
    </children>

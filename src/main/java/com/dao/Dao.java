@@ -31,6 +31,7 @@ public class Dao<T> implements Serializable {
 
         }   catch(Exception ex) {
             mensagem = (Alerta.obterMensagemException(ex));
+            em.getTransaction().rollback();
             return false;
         }
     }
@@ -45,6 +46,7 @@ public class Dao<T> implements Serializable {
 
         } catch (Exception ex){
             mensagem = Alerta.obterMensagemException(ex);
+            em.getTransaction().rollback();
             return false;
         }
     }
@@ -65,6 +67,7 @@ public class Dao<T> implements Serializable {
 
         } catch(Exception ex){
             mensagem = "Erro ao remover: " + Alerta.obterMensagemException(ex);
+            em.getTransaction().rollback();
             return false;
         }
     }

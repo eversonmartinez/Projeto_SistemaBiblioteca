@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.VisualizacaoEmprestimoController">
+   <children>
+      <ListView fx:id="listaEmprestimo" layoutX="14.0" layoutY="183.0" onKeyPressed="#listaEmprestimo_keyPressed" onMouseClicked="#listaEmprestimo_mouseClicked" prefHeight="203.0" prefWidth="219.0" />
+      <GridPane layoutX="264.0" layoutY="93.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Id:" />
+            <TextField fx:id="txtId" editable="false" GridPane.columnIndex="1" />
+            <Label text="Livro" GridPane.rowIndex="1" />
+            <Label text="Cópia" GridPane.rowIndex="2" />
+            <Label text="Data" GridPane.rowIndex="3" />
+            <Label text="Previsão entrega" GridPane.rowIndex="4" />
+            <Label text="Entregue" GridPane.rowIndex="5" />
+            <Label text="Data entregue" GridPane.rowIndex="6" />
+            <CheckBox fx:id="cbEntregue" mnemonicParsing="false" onAction="#marcacaoCheckBox" text="Não" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <DatePicker fx:id="dtpData" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </DatePicker>
+            <DatePicker fx:id="dtpEntrega" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <DatePicker fx:id="dtpPrevisao" editable="false" mouseTransparent="true" opacity="0.65" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="txtLivro" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+            <TextField fx:id="txtCopia" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />                      
+         </children>
+      </GridPane>
+      <GridPane alignment="CENTER" layoutX="15.0" layoutY="367.0" prefHeight="30.0" prefWidth="217.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <ListView fx:id="listaEmprestimoAtual" layoutX="14.0" layoutY="31.0" onKeyPressed="#listaEmprestimoAtual_keyPressed" onMouseClicked="#listaEmprestimoAtual_mouseClicked" prefHeight="120.0" prefWidth="219.0" />
+      <TextField layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="163.0" text="Livros Atualmente em Posse" />
+      <TextField layoutX="14.0" layoutY="166.0" text="Todos os Empréstimos" />
+      <TextField fx:id="txtContagem" layoutX="199.0" layoutY="14.0" prefHeight="25.0" prefWidth="37.0" />
+   </children>
+</AnchorPane>

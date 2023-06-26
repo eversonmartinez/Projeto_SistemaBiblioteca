@@ -3,6 +3,7 @@ package com.dao;
 import com.model.Copia;
 import com.model.Emprestimo;
 import com.model.Leitor;
+import com.model.Usuario;
 import com.util.Alerta;
 import jakarta.persistence.Query;
 import jakarta.persistence.TemporalType;
@@ -129,6 +130,18 @@ public class EmprestimoDao extends Dao<Emprestimo> {
 
     public List<Emprestimo> findByLeitor(Long idLeitor){
         Query query = em.createQuery("From Emprestimo Where leitor.id = " + idLeitor);
+        return query.getResultList();
+    }
+
+    public List<Emprestimo> findByUsuario(Usuario usuario){
+        Leitor leitor = (Leitor) em.createQuery("from Leitor where usuario.id = " + usuario.getId()).getSingleResult();
+        Query query = em.createQuery("From Emprestimo Where leitor.id = " + leitor.getId());
+        return query.getResultList();
+    }
+
+    public List<Emprestimo> findByUsuario(Long idUsuario){
+        Leitor leitor = (Leitor) em.createQuery("from Leitor where usuario.id = " + idUsuario).getSingleResult();
+        Query query = em.createQuery("From Emprestimo Where leitor.id = " + leitor.getId());
         return query.getResultList();
     }
 
