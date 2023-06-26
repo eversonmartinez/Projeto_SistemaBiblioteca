@@ -83,13 +83,13 @@ public class VisualizacaoLivroController implements Initializable, Controller {
                 List<Livro> adicionar = livroDao.findByAno(Integer.parseInt(txtAno.getText()));
 
                 if(primeiroFiltro == true){
+                    primeiroFiltro = false;
                     for(Livro livroNovo : adicionar){
                         livros.add(livroNovo);
                     }
                 }
 
                 else {
-                    primeiroFiltro = false;
                     livros = intersecaoListas(livros, adicionar);
                 }
             }
@@ -98,13 +98,13 @@ public class VisualizacaoLivroController implements Initializable, Controller {
                 List<Livro> adicionar = livroDao.findByEdicao(txtEdicao.getText());
 
                 if(primeiroFiltro){
+                    primeiroFiltro = false;
                     for(Livro livroNovo : adicionar){
                         livros.add(livroNovo);
                     }
                 }
 
                 else {
-                    primeiroFiltro = false;
                     livros = intersecaoListas(livros, adicionar);
                 }
             }
@@ -113,13 +113,13 @@ public class VisualizacaoLivroController implements Initializable, Controller {
                 List<Livro> adicionar = livroDao.findByGenero(cboGenero.getSelectionModel().getSelectedItem());
 
                 if(primeiroFiltro == true){
+                    primeiroFiltro = false;
                     for(Livro livroNovo : adicionar){
                         livros.add(livroNovo);
                     }
                 }
 
                 else {
-                    primeiroFiltro = false;
                     livros = intersecaoListas(livros, adicionar);
                 }
             }
@@ -128,13 +128,13 @@ public class VisualizacaoLivroController implements Initializable, Controller {
                 List<Livro> adicionar = livroDao.findByAutor(cboAutor.getSelectionModel().getSelectedItem());
 
                 if(primeiroFiltro == true){
+                    primeiroFiltro = false;
                     for(Livro livroNovo : adicionar){
                         livros.add(livroNovo);
                     }
                 }
 
                 else {
-                    primeiroFiltro = false;
                     livros = intersecaoListas(livros, adicionar);
                 }
             }

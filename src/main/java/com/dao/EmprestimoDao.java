@@ -31,6 +31,7 @@ public class EmprestimoDao extends Dao<Emprestimo> {
 
         }   catch(Exception ex) {
             mensagem = (Alerta.obterMensagemException(ex));
+            em.getTransaction().rollback();
             return false;
         }
     }
@@ -49,6 +50,7 @@ public class EmprestimoDao extends Dao<Emprestimo> {
 
         } catch (Exception ex){
             mensagem = Alerta.obterMensagemException(ex);
+            em.getTransaction().rollback();
             return false;
         }
     }

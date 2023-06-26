@@ -1,6 +1,8 @@
 package com.controller;
 
+import com.dao.AlunoDao;
 import com.dao.LeitorDao;
+import com.model.Leitor;
 import com.model.Usuario;
 import com.util.Holder;
 import javafx.event.ActionEvent;
@@ -9,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,16 +29,25 @@ public class UsuarioController implements Initializable, Controller {
 
     @FXML
     private void onPerfilClick(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/VisualizacaoLeitor.fxml"));
+        Leitor leitor = new LeitorDao().findByIdUsuario(usuarioLogado.getId());
+        Parent root;
+        if (new AlunoDao().findById(leitor.getId()) != null) {
+            root = FXMLLoader.load(getClass().getResource("/fxml/VisualizacaoLeitorAluno.fxml"));
+        }
+        else {
+            root = FXMLLoader.load(getClass().getResource("/fxml/VisualizacaoLeitorProfessor.fxml"));
+        }
 
         Holder holder = Holder.getInstance();
         holder.setHandle(usuarioLogado, this);
 
         Scene scene = new Scene(root);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getStylesheets().add("/style/Principal.css");
 
         Stage stage = new Stage();
         stage.setTitle("Leitor");
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
 
@@ -47,9 +59,11 @@ public class UsuarioController implements Initializable, Controller {
 
         Scene scene = new Scene(root);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getStylesheets().add("/style/Principal.css");
 
         Stage stage = new Stage();
         stage.setTitle("Visualização de Livros");
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
 
@@ -64,9 +78,11 @@ public class UsuarioController implements Initializable, Controller {
 
         Scene scene = new Scene(root);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getStylesheets().add("/style/Principal.css");
 
         Stage stage = new Stage();
         stage.setTitle("Empréstimos de " + new LeitorDao().findByIdUsuario(usuarioLogado.getId()));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
 

@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -25,9 +26,11 @@ public class AdminController implements Initializable {
 
         Scene scene = new Scene(root);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getStylesheets().add("/style/Principal.css");
 
         Stage stage = new Stage();
         stage.setTitle("Cadastro de Alunos");
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
 
@@ -39,9 +42,11 @@ public class AdminController implements Initializable {
 
         Scene scene = new Scene(root);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getStylesheets().add("/style/Principal.css");
 
         Stage stage = new Stage();
         stage.setTitle("Cadastro de Professores");
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
     }
@@ -52,9 +57,11 @@ public class AdminController implements Initializable {
 
         Scene scene = new Scene(root);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getStylesheets().add("/style/Principal.css");
 
         Stage stage = new Stage();
         stage.setTitle("Cadastro de Livros");
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
 
@@ -66,11 +73,14 @@ public class AdminController implements Initializable {
 
         Scene scene = new Scene(root);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getStylesheets().add("/style/Principal.css");
 
         Stage stage = new Stage();
         stage.setTitle("Cadastro de Empréstimos");
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
 
     }
+
 }

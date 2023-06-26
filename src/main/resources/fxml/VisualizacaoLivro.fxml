@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.VisualizacaoLivroController">
    <children>
       <ListView fx:id="listaLivro" layoutX="339.0" layoutY="35.0" onKeyPressed="#listaLivro_keyPressed" onMouseClicked="#listaLivro_mouseClicked" prefHeight="349.0" prefWidth="234.0" />
@@ -58,7 +57,7 @@
             <Label text="Edição" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
             <Label text="Gênero" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
             <Label text="Autor" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-             <Button fx:id="pesquisar" mnemonicParsing="false" onAction="#btnPesquisar_click" prefHeight="26.0" prefWidth="88.0" text="Pesquisar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+             <Button fx:id="pesquisar" defaultButton="true" mnemonicParsing="false" onAction="#btnPesquisar_click" prefHeight="26.0" prefWidth="88.0" text="Pesquisar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -66,7 +65,7 @@
             <ComboBox fx:id="cboGenero" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label text="Campos para pesquisa:" GridPane.columnSpan="2" />
             <ComboBox fx:id="cboAutor" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Button fx:id="limpar" mnemonicParsing="false" onAction="#btnLimpar_click" prefHeight="26.0" prefWidth="88.0" text="Limpar filtros" GridPane.columnIndex="2">
+            <Button fx:id="limpar" cancelButton="true" mnemonicParsing="false" onAction="#btnLimpar_click" prefHeight="26.0" prefWidth="88.0" text="Limpar filtros" GridPane.columnIndex="2">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

@@ -51,7 +51,7 @@ public class Livro implements Serializable {
         this.autores = new ArrayList<>();
         this.autores.add(autor);
         this.copias = new ArrayList<>();
-        this.copias.add(new Copia(true));
+        this.copias.add(new Copia());
     }
 
     public Livro(String nome, Integer ano, String edicao, Genero genero, Autor autor, Integer qtdCopias) {
@@ -63,8 +63,8 @@ public class Livro implements Serializable {
         this.autores.add(autor);
         this.copias = new ArrayList<>();
         for(int i =0; i<qtdCopias; i++)
-            this.copias.add(new Copia());
-        this.copias.get(0).setEmprestavel(true);
+            this.copias.add(new Copia(true));
+        this.copias.get(0).setEmprestavel(false);
     }
 
     public void adicionarCopia(){
@@ -74,7 +74,7 @@ public class Livro implements Serializable {
     public Boolean removerCopia(Copia copia){
         int copiaNaoEmprestavel = 0;
         for (Copia c : this.copias) {
-            if(c!=copia && c.getEmprestavel() == true)
+            if(c!=copia && c.getEmprestavel() == false)
                 copiaNaoEmprestavel++;
         }
         if(copiaNaoEmprestavel == 0) {
@@ -91,7 +91,7 @@ public class Livro implements Serializable {
         Copia copia = this.copias.get(index);
 
         for (Copia c : this.copias) {
-            if(c!= copia && c.getEmprestavel() == true)
+            if(c!= copia && c.getEmprestavel() == false)
                 copiaNaoEmprestavel++;
         }
 
@@ -106,7 +106,7 @@ public class Livro implements Serializable {
 
     public void adicionarNCopias(Integer numeroCopias){
         for(int i = 0; i < numeroCopias; i++)
-            this.copias.add(new Copia());
+            this.copias.add(new Copia(true));
     }
 
     public void adicionarAutor(Autor autor){

@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -65,22 +66,28 @@ public class VisualizacaoEmprestimoController implements Initializable, Controll
     Usuario usuarioLogado;
 
     private void atualizarCheckBox(){
-        LocalDate data = listaEmprestimo.getSelectionModel().getSelectedItem().getDataEntrega();
-        if(data != null) {
+
+        LocalDate dataEntrega = listaEmprestimo.getSelectionModel().getSelectedItem().getDataEntrega();
+        if(dataEntrega != null) {
             cbEntregue.selectedProperty().set(true);
-            dtpEntrega.setValue(data);
+            dtpEntrega.setValue(dataEntrega);
         }
-        else
+        else {
             cbEntregue.selectedProperty().set(false);
+        }
         marcacaoCheckBox(new ActionEvent());
     }
 
     @FXML
     private void marcacaoCheckBox(ActionEvent event){
-        if(cbEntregue.isSelected())
+        if(cbEntregue.isSelected()) {
             cbEntregue.setText("Sim");
-        else
+            dtpEntrega.setDisable(false);
+        }
+        else {
+            dtpEntrega.setDisable(true);
             cbEntregue.setText("Não");
+        }
     }
 
 
@@ -119,8 +126,6 @@ public class VisualizacaoEmprestimoController implements Initializable, Controll
             txtCopia.setText(emprestimoSelecionado.getCopia().toString());
             dtpData.setValue(emprestimoSelecionado.getData());
             dtpPrevisao.setValue(emprestimoSelecionado.getDataPrevistaEntrega());
-            if(emprestimoSelecionado.getDataEntrega() != null)
-                dtpEntrega.setValue(emprestimoSelecionado.getDataEntrega());
             atualizarCheckBox();
         }
     }
@@ -145,41 +150,61 @@ public class VisualizacaoEmprestimoController implements Initializable, Controll
             ObservableList<Emprestimo> data = FXCollections.observableList(emprestimosAbertos);
             listaEmprestimoAtual.setItems(data);
             txtContagem.setText(String.valueOf(emprestimosAbertos.size()));
+            verificarLimiteEmprestimos();
         } catch(Exception ex) {
             ex.printStackTrace();
         }
     }
 
     private void verificarLimiteEmprestimos(){
-        if(Integer.valueOf(txtContagem.getText()) == 5){
-            txtContagem.setStyle("-fx-text-inner-color: red");
+        if(Integer.valueOf(txtContagem.getText()) >= 5){
+            txtContagem.setStyle("-fx-text-fill: red;");
         }
         else
-            txtContagem.setStyle("-fx-text-inner-color: inherited");
+            txtContagem.setStyle("-fx-text-fill: black");
+    }
+
+    public void alertaEmprestimoVencido(){
+        List<Emprestimo> emprestimosAbertos = listaEmprestimoAtual.getItems();
+        for(Emprestimo emprestimo : emprestimosAbertos){
+            if(LocalDate.now().isEqual(emprestimo.getDataPrevistaEntrega())){
+                Alerta.exibirInfo("Um dos seus empréstimos vencerá hoje!");
+            }
+            if(LocalDate.now().isAfter(emprestimo.getDataPrevistaEntrega())){
+                Alerta.exibirAviso("Você possui empréstimos vencidos ! ",
+                        (emprestimo.toString() + "\n" + "Data máxima de entrega: " +
+                                emprestimo.getDataPrevistaEntrega().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+            }
+        }
     }
 
 
     @FXML
     private void listaEmprestimo_keyPressed(KeyEvent event){
         limparCampos();
+        listaEmprestimoAtual.getSelectionModel().select(null);
         exibirDados();
     }
 
     @FXML
     private void listaEmprestimo_mouseClicked(MouseEvent event){
         limparCampos();
+
+        listaEmprestimoAtual.getSelectionModel().select(null);
         exibirDados();
     }
 
     @FXML
     private void listaEmprestimoAtual_keyPressed(KeyEvent event){
         limparCampos();
+        listaEmprestimo.getSelectionModel().select(null);
         exibirDadosListaAtual();
     }
 
     @FXML
     private void listaEmprestimoAtual_mouseClicked(MouseEvent event){
         limparCampos();
+        listaEmprestimo.getSelectionModel().select(null);
         exibirDadosListaAtual();
     }
 
@@ -193,5 +218,6 @@ public class VisualizacaoEmprestimoController implements Initializable, Controll
     public void initialize(URL url, ResourceBundle resourceBundle) {
         usuarioLogado = (Usuario) Holder.getInstance().getObject();
         refresh();
+        alertaEmprestimoVencido();
     }
 }

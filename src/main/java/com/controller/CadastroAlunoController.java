@@ -93,31 +93,6 @@ public class CadastroAlunoController implements Initializable, Controller {
                     exibirAlunos();
                     return;
                 }
-//                if(!existeAlteracao(listaAluno.getSelectionModel().getSelectedItem().getId())){
-//                    Alerta.exibirErro("Alteração Inválida");
-//                    exibirAlunos();
-//                    if(txtUsuario.getText().length() > 1){
-//                        if(txtSenha.getText().length()>1)
-//                            alunoSelecionado.alterarSenha(txtSenha.getText());
-//                        else
-//                            Alerta.exibirAviso("Uma senha deve ser informada");
-//                    }
-//
-//                    else if(txtSenha.getText().length() > 1){
-//                        Alerta.exibirAviso("O usuário deve ser informado");
-//                    }
-//                    return;
-//                }
-//
-//                alunoSelecionado.setEmail(txtEmail.getText());
-//                alunoSelecionado.setTelefone(txtTelefone.getText());
-//                if (alunoSelecionado.getUsuario() == null && txtUsuario.getText().length()>1){
-//                    if (txtSenha.getText().length() > 0)
-//                        alunoSelecionado.criarUsuario(txtUsuario.getText(), txtSenha.getText());
-//                }
-//
-//                else if(txtSenha.getText().length()>1)
-//                    alunoSelecionado.alterarSenha(txtSenha.getText());
 
                 if(alunoDao.update(alunoSelecionado)) {
                     Alerta.exibirInfo(alunoDao.getMensagem());
@@ -253,24 +228,28 @@ public class CadastroAlunoController implements Initializable, Controller {
     private void listaAluno_keyPressed(KeyEvent event){
 
         exibirDados();
-        txtNome.setEditable(false);
-        if(txtUsuario.getLength()>0)
-            txtUsuario.setEditable(false);
-        else
-            txtUsuario.setEditable(true);
-        txtMatricula.setEditable(false);
+        if(listaAluno.getSelectionModel().getSelectedItem()!=null){
+            txtNome.setEditable(false);
+            if(txtUsuario.getLength()>0)
+                txtUsuario.setEditable(false);
+            else
+                txtUsuario.setEditable(true);
+            txtMatricula.setEditable(false);
+        }
     }
 
     @FXML
     private void listaAluno_mouseClicked(MouseEvent event){
 
         exibirDados();
-        txtNome.setEditable(false);
-        if(txtUsuario.getLength()>0)
-            txtUsuario.setEditable(false);
-        else
-            txtUsuario.setEditable(true);
-        txtMatricula.setEditable(false);
+        if(listaAluno.getSelectionModel().getSelectedItem()!=null) {
+            txtNome.setEditable(false);
+            if (txtUsuario.getLength() > 0)
+                txtUsuario.setEditable(false);
+            else
+                txtUsuario.setEditable(true);
+            txtMatricula.setEditable(false);
+        }
     }
 
     private void exibirDados(){

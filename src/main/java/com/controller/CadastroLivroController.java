@@ -18,6 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -70,6 +71,21 @@ public class CadastroLivroController implements Initializable, Controller {
                     return;
                 }
 
+                if(txtCopia.getText().length()<1){
+                    Alerta.exibirErro("Campo \"Nº Cópias\" não pode ser vazio!");
+                    return;
+                }
+
+                if(cboGenero.getSelectionModel().getSelectedItem() == null){
+                    Alerta.exibirErro("Campo \"Gênero\" deve ser selecionado!");
+                    return;
+                }
+
+                if(cboAutor.getSelectionModel().getSelectedItems().size() == 0){
+                    Alerta.exibirErro("Pelo menos 1 \"Autor\" deve ser selecionado!");
+                    return;
+                }
+
                 Livro novoLivro;
                 ObservableList<Autor> autores = cboAutor.getSelectionModel().getSelectedItems();
                 if(txtCopia.getText().isEmpty()) {
@@ -115,8 +131,7 @@ public class CadastroLivroController implements Initializable, Controller {
                         Alerta.exibirInfo(livroDao.getMensagem());
                         refresh();
                         limparCampos();
-                        txtCopia.setText("1");
-                        listaLivro.getSelectionModel().select(null);
+                        exibirDados();
                         return;
                     }
                 }
@@ -207,18 +222,22 @@ public class CadastroLivroController implements Initializable, Controller {
     private void listaLivro_keyPressed(KeyEvent event){
 
         exibirDados();
-        txtNomeLivro.setEditable(false);
-        txtAno.setEditable(false);
-        txtEdicao.setEditable(false);
+        if(listaLivro.getSelectionModel().getSelectedItem()!=null) {
+            txtNomeLivro.setEditable(false);
+            txtAno.setEditable(false);
+            txtEdicao.setEditable(false);
+        }
     }
 
     @FXML
     private void listaLivro_mouseClicked(MouseEvent event){
 
         exibirDados();
-        txtNomeLivro.setEditable(false);
-        txtAno.setEditable(false);
-        txtEdicao.setEditable(false);
+        if(listaLivro.getSelectionModel().getSelectedItem()!=null) {
+            txtNomeLivro.setEditable(false);
+            txtAno.setEditable(false);
+            txtEdicao.setEditable(false);
+        }
     }
 
     public void exibirDados(){
@@ -253,9 +272,11 @@ public class CadastroLivroController implements Initializable, Controller {
 
         Scene scene = new Scene(root);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getStylesheets().add("/style/Principal.css");
 
         Stage stage = new Stage();
         stage.setTitle("Gerenciamento de Cópias");
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
 
@@ -349,14 +370,18 @@ public class CadastroLivroController implements Initializable, Controller {
     private void listaGenero_keyPressed(KeyEvent event){
         limparCampos();
         exibirDadosGenero();
-        txtNomeGenero.setEditable(false);
+        if(listaGenero.getSelectionModel().getSelectedItem() != null) {
+            txtNomeGenero.setEditable(false);
+        }
     }
 
     @FXML
     private void listaGenero_mouseClicked(MouseEvent event){
         limparCampos();
         exibirDadosGenero();
-        txtNomeGenero.setEditable(false);
+        if(listaGenero.getSelectionModel().getSelectedItem() != null) {
+            txtNomeGenero.setEditable(false);
+        }
     }
 
     private void exibirDadosGenero(){
@@ -453,15 +478,19 @@ public class CadastroLivroController implements Initializable, Controller {
     @FXML
     private void listaAutor_keyPressed(KeyEvent event){
         exibirDadosAutor();
-        txtNomeAutor.setEditable(false);
-        txtSobrenomeAutor.setEditable(false);
+        if(listaAutor.getSelectionModel().getSelectedItem() != null) {
+            txtNomeAutor.setEditable(false);
+            txtSobrenomeAutor.setEditable(false);
+        }
     }
 
     @FXML
     private void listaAutor_mouseClicked(MouseEvent event){
         exibirDadosAutor();
-        txtNomeAutor.setEditable(false);
-        txtSobrenomeAutor.setEditable(false);
+        if(listaAutor.getSelectionModel().getSelectedItem() != null) {
+            txtNomeAutor.setEditable(false);
+            txtSobrenomeAutor.setEditable(false);
+        }
     }
 
     private void exibirDadosAutor(){

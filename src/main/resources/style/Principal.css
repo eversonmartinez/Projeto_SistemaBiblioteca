@@ -1,0 +1,11 @@
+.button {
+    -fx-font-weight: bold;
+    -fx-border-width:2px;
+    
+}
+
+.root{
+    -fx-background-color: rgb(150, 242, 213);
+}
+
+

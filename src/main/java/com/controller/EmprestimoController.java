@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -60,22 +61,27 @@ public class EmprestimoController implements Initializable, Controller {
     LeitorDao leitorDao = new LeitorDao();
 
     private void atualizarCheckBox(){
-        LocalDate data = listaEmprestimo.getSelectionModel().getSelectedItem().getDataEntrega();
-        if(data != null) {
+        LocalDate dataEntrega = listaEmprestimo.getSelectionModel().getSelectedItem().getDataEntrega();
+        if(dataEntrega != null) {
             cbEntregue.selectedProperty().set(true);
-            dtpEntrega.setValue(data);
+            dtpEntrega.setValue(dataEntrega);
         }
-        else
+        else {
             cbEntregue.selectedProperty().set(false);
+        }
         marcacaoCheckBox(new ActionEvent());
     }
 
     @FXML
     private void marcacaoCheckBox(ActionEvent event){
-        if(cbEntregue.isSelected())
+        if(cbEntregue.isSelected()) {
             cbEntregue.setText("Sim");
-        else
+            dtpEntrega.setDisable(false);
+        }
+        else {
+            dtpEntrega.setDisable(true);
             cbEntregue.setText("Não");
+        }
     }
 
 
@@ -267,9 +273,11 @@ public class EmprestimoController implements Initializable, Controller {
 
         Scene scene = new Scene(root);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getStylesheets().add("/style/Principal.css");
 
         Stage stage = new Stage();
         stage.setTitle("Cadastro de Alunos");
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
 
@@ -278,6 +286,7 @@ public class EmprestimoController implements Initializable, Controller {
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         stage = new Stage();
         stage.setTitle("Cadastro de Professores");
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/icon.png")));
         stage.setScene(scene);
         stage.show();
     }

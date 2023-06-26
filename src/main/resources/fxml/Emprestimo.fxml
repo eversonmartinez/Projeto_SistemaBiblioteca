@@ -53,7 +53,7 @@
                         <Hyperlink fx:id="linkLeitor" onAction="#btnLeitor_click" text="Novo" underline="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <Label text="Data" GridPane.rowIndex="4" />
                         <Label text="Previsão entrega" GridPane.rowIndex="5" />
-                        <Button fx:id="Salvar" mnemonicParsing="false" onAction="#btnSalvar_click" text="Salvar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+                        <Button fx:id="Salvar" defaultButton="true" mnemonicParsing="false" onAction="#btnSalvar_click" text="Salvar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
                         <Label text="Entregue" GridPane.rowIndex="6" />
                         <Label text="Data entregue" GridPane.rowIndex="7" />
                         <CheckBox fx:id="cbEntregue" mnemonicParsing="false" onAction="#marcacaoCheckBox" text="Não" GridPane.columnIndex="1" GridPane.rowIndex="6" />
@@ -62,7 +62,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </DatePicker>
-                        <DatePicker fx:id="dtpEntrega" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <DatePicker fx:id="dtpEntrega" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <DatePicker fx:id="dtpPrevisao" editable="false" mouseTransparent="true" opacity="0.65" GridPane.columnIndex="1" GridPane.rowIndex="5" />                      
                      </children>
                   </GridPane>

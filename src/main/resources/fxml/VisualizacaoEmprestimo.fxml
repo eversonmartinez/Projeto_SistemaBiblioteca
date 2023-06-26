@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.VisualizacaoEmprestimoController">
    <children>
@@ -46,7 +47,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </DatePicker>
-            <DatePicker fx:id="dtpEntrega" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <DatePicker fx:id="dtpEntrega" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <DatePicker fx:id="dtpPrevisao" editable="false" mouseTransparent="true" opacity="0.65" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="txtLivro" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
             <TextField fx:id="txtCopia" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />                      
@@ -62,8 +63,17 @@
         </rowConstraints>
       </GridPane>
       <ListView fx:id="listaEmprestimoAtual" layoutX="14.0" layoutY="31.0" onKeyPressed="#listaEmprestimoAtual_keyPressed" onMouseClicked="#listaEmprestimoAtual_mouseClicked" prefHeight="120.0" prefWidth="219.0" />
-      <TextField layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="163.0" text="Livros Atualmente em Posse" />
-      <TextField layoutX="14.0" layoutY="166.0" text="Todos os Empréstimos" />
-      <TextField fx:id="txtContagem" layoutX="199.0" layoutY="14.0" prefHeight="25.0" prefWidth="37.0" />
+      <TextField editable="false" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="173.0" text="Livros Atualmente em Posse">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></TextField>
+      <TextField editable="false" layoutX="14.0" layoutY="166.0" text="Todos os Empréstimos">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></TextField>
+      <TextField fx:id="txtContagem" alignment="CENTER" editable="false" layoutX="199.0" layoutY="14.0" prefHeight="25.0" prefWidth="37.0" text="5">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></TextField>
    </children>
 </AnchorPane>

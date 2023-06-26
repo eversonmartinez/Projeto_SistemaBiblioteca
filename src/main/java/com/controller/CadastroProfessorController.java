@@ -224,24 +224,28 @@ public class CadastroProfessorController implements Initializable {
     private void listaProfessor_keyPressed(KeyEvent event){
 
         exibirDados();
-        txtNome.setEditable(false);
-        if(txtUsuario.getLength()>0)
-            txtUsuario.setEditable(false);
-        else
-            txtUsuario.setEditable(true);
-        txtFormacao.setEditable(false);
+        if(listaProfessor.getSelectionModel().getSelectedItem()!=null) {
+            txtNome.setEditable(false);
+            if (txtUsuario.getLength() > 0)
+                txtUsuario.setEditable(false);
+            else
+                txtUsuario.setEditable(true);
+            txtFormacao.setEditable(false);
+        }
     }
 
     @FXML
     private void listaProfessor_mouseClicked(MouseEvent event){
 
         exibirDados();
-        txtNome.setEditable(false);
-        if(txtUsuario.getLength()>0)
-            txtUsuario.setEditable(false);
-        else
-            txtUsuario.setEditable(true);
-        txtFormacao.setEditable(false);
+        if(listaProfessor.getSelectionModel().getSelectedItem()!=null) {
+            txtNome.setEditable(false);
+            if (txtUsuario.getLength() > 0)
+                txtUsuario.setEditable(false);
+            else
+                txtUsuario.setEditable(true);
+            txtFormacao.setEditable(false);
+        }
     }
 
     private void exibirDados(){

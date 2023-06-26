@@ -73,7 +73,7 @@
                         <Label text="Nº Cópias" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                         <Label text="Gênero" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                         <Label text="Autor" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                         <Button fx:id="salvar" mnemonicParsing="false" onAction="#btnSalvar_click" prefHeight="26.0" prefWidth="88.0" text="Salvar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+                         <Button fx:id="salvar" defaultButton="true" mnemonicParsing="false" onAction="#btnSalvar_click" prefHeight="26.0" prefWidth="88.0" text="Salvar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
